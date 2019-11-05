@@ -1,0 +1,41 @@
+INSERT INTO users(email) VALUES
+('bushcraftparsons@gmail.com'),
+('pilotofpenzance@gmail.com');
+
+INSERT INTO capacity(capacity, user_id) VALUES
+('P1', 1),
+('P1S', 1),
+('P2', 1),
+('PUT', 1),
+('P1', 2),
+('P1S', 2),
+('P2', 2),
+('PUT', 2);
+
+INSERT INTO places(user_id, place) VALUES
+(1, 'LEQ'),
+(1, 'STM'),
+(1, 'NQY'),
+(1, 'EXT'),
+(2, 'LEQ'),
+(2, 'STM'),
+(2, 'NQY'),
+(2, 'EXT');
+
+INSERT INTO aircraft(user_id, aircraft, type) VALUES
+(1, 'GISSG','DHC6'),
+(1, 'GCBML','DHC6'),
+(1, 'GCEWM','DHC6'),
+(1, 'GBIHO','DHC6'),
+(1, 'GSBUS','BN2'),
+(1, 'GBUBP','BN2'),
+(1, 'GBUBN','BN2'),
+(1, 'GSSKY','BN2'),
+(2, 'GISSG','DHC6'),
+(2, 'GCBML','DHC6'),
+(2, 'GCEWM','DHC6'),
+(2, 'GBIHO','DHC6'),
+(2, 'GSBUS','BN2'),
+(2, 'GBUBP','BN2'),
+(2, 'GBUBN','BN2'),
+(2, 'GSSKY','BN2');

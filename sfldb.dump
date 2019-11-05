@@ -1,0 +1,460 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 10.6
+-- Dumped by pg_dump version 10.10 (Ubuntu 10.10-0ubuntu0.18.04.1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: aircraft; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.aircraft (
+    user_id integer NOT NULL,
+    aircraft character varying(6) NOT NULL,
+    type character varying(4) NOT NULL
+);
+
+
+ALTER TABLE public.aircraft OWNER TO postgres;
+
+--
+-- Name: capacity; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.capacity (
+    user_id integer NOT NULL,
+    capacity character varying(5) NOT NULL
+);
+
+
+ALTER TABLE public.capacity OWNER TO postgres;
+
+--
+-- Name: logs; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.logs (
+    id bigint NOT NULL,
+    user_id integer,
+    date date NOT NULL,
+    aircraft character varying(6) NOT NULL,
+    type character varying(4) NOT NULL,
+    departure_place character varying(3),
+    departure_time timestamp without time zone,
+    arrival_place character varying(3),
+    arrival_time timestamp without time zone,
+    flight_time integer NOT NULL,
+    inst_app boolean DEFAULT true,
+    night_flight integer,
+    log boolean DEFAULT true,
+    comments text,
+    pilot_no character varying(2) NOT NULL,
+    capacity character varying(5),
+    created_at time without time zone,
+    deleted_at time without time zone,
+    updated_at time without time zone
+);
+
+
+ALTER TABLE public.logs OWNER TO postgres;
+
+--
+-- Name: logs_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.logs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.logs_id_seq OWNER TO postgres;
+
+--
+-- Name: logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.logs_id_seq OWNED BY public.logs.id;
+
+
+--
+-- Name: places; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.places (
+    user_id integer NOT NULL,
+    place character varying(3) NOT NULL
+);
+
+
+ALTER TABLE public.places OWNER TO postgres;
+
+--
+-- Name: templates; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.templates (
+    user_id integer NOT NULL,
+    template_name character varying(10) NOT NULL,
+    departure_place character varying(3),
+    departure_time timestamp without time zone,
+    arrival_place character varying(3),
+    arrival_time timestamp without time zone,
+    flight_time integer,
+    inst_app boolean,
+    night_flight integer,
+    log boolean DEFAULT true,
+    comments text,
+    pilot_no character varying(2),
+    capacity character varying(5),
+    created_at time without time zone,
+    deleted_at time without time zone,
+    updated_at time without time zone
+);
+
+
+ALTER TABLE public.templates OWNER TO postgres;
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users (
+    id bigint NOT NULL,
+    email character varying(40) NOT NULL
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO postgres;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: logs id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.logs ALTER COLUMN id SET DEFAULT nextval('public.logs_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Data for Name: aircraft; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.aircraft (user_id, aircraft, type) FROM stdin;
+1	GISSG	DHC6
+1	GCBML	DHC6
+1	GCEWM	DHC6
+1	GBIHO	DHC6
+1	GSBUS	BN2
+1	GBUBP	BN2
+1	GBUBN	BN2
+1	GSSKY	BN2
+2	GISSG	DHC6
+2	GCBML	DHC6
+2	GCEWM	DHC6
+2	GBIHO	DHC6
+2	GSBUS	BN2
+2	GBUBP	BN2
+2	GBUBN	BN2
+2	GSSKY	BN2
+1	GBUTR	DHC6
+1	GISTF	DHC6
+\.
+
+
+--
+-- Data for Name: capacity; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.capacity (user_id, capacity) FROM stdin;
+1	P1
+1	P1S
+1	P2
+1	PUT
+2	P1
+2	P1S
+2	P2
+2	PUT
+\.
+
+
+--
+-- Data for Name: logs; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.logs (id, user_id, date, aircraft, type, departure_place, departure_time, arrival_place, arrival_time, flight_time, inst_app, night_flight, log, comments, pilot_no, capacity, created_at, deleted_at, updated_at) FROM stdin;
+2	1	2019-10-29	GISTF	DHC6	LEQ	2019-10-29 05:00:00	STM	2019-10-29 05:15:00	15	t	5	t	Saw dolphins	MP	P1	16:46:19.369132	\N	16:46:19.369133
+3	1	2019-06-01	GBUBN	BN2	EXT	2019-06-01 12:00:00	NQY	2019-06-01 15:00:00	180	t	0	t		SP	P1	13:14:10.709423	\N	13:14:10.709423
+4	1	2019-11-01	GBUBN	BN2	EXT	2019-11-01 05:00:00	LEQ	2019-11-01 08:00:00	180	t	0	t		SP	P1	13:26:15.039162	\N	13:26:15.039162
+8	2	2019-04-08	GBIHO	DHC6	STM	2019-04-08 08:45:00	LEQ	2019-04-08 09:05:00	20	f	0	t		MP	P1	16:10:35.358311	\N	16:10:35.358312
+9	2	2019-04-04	GBIHO	DHC6	LEQ	2019-04-04 09:30:00	STM	2019-04-04 09:50:00	20	f	0	t		MP	P1	16:11:23.447555	\N	16:11:23.447557
+5	2	2019-04-08	GBIHO	DHC6	LEQ	2019-04-08 08:10:00	STM	2019-04-08 08:30:00	20	f	0	t		MP	P1	15:42:23.343721	\N	15:42:23.343722
+10	1	2019-11-02	GBIHO	DHC6	NQY	2019-11-02 13:00:00	STM	2019-11-02 13:50:00	50	f	0	t		MP	P1	07:31:23.484529	\N	07:31:23.484529
+11	1	2019-11-02	GBUBN	BN2	EXT	2019-11-02 12:00:00	LEQ	2019-11-02 15:00:00	180	f	0	t		SP	P1	07:31:52.447889	\N	07:31:52.44789
+12	1	2019-11-02	GBUBP	BN2	LEQ	2019-11-02 12:00:00	STM	2019-11-02 12:15:00	15	f	0	t		SP	P1	07:32:18.0863	\N	07:32:18.0863
+13	1	2019-11-02	GISSG	DHC6	NQY	2019-11-02 16:00:00	STM	2019-11-02 16:15:00	15	f	0	t		MP	P1	07:32:41.973204	\N	07:32:41.973204
+14	1	2019-11-02	GBUBN	BN2	STM	2019-11-02 15:00:00	LEQ	2019-11-02 15:15:00	15	f	0	t		SP	P1	10:27:45.513971	\N	10:27:45.513973
+\.
+
+
+--
+-- Data for Name: places; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.places (user_id, place) FROM stdin;
+1	LEQ
+1	STM
+1	NQY
+1	EXT
+2	LEQ
+2	STM
+2	NQY
+2	EXT
+\.
+
+
+--
+-- Data for Name: templates; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.templates (user_id, template_name, departure_place, departure_time, arrival_place, arrival_time, flight_time, inst_app, night_flight, log, comments, pilot_no, capacity, created_at, deleted_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.users (id, email) FROM stdin;
+1	bushcraftparsons@gmail.com
+2	pilotofpenzance@gmail.com
+\.
+
+
+--
+-- Name: logs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.logs_id_seq', 14, true);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 2, true);
+
+
+--
+-- Name: aircraft aircraft_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.aircraft
+    ADD CONSTRAINT aircraft_pkey PRIMARY KEY (user_id, aircraft, type);
+
+
+--
+-- Name: capacity capacity_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.capacity
+    ADD CONSTRAINT capacity_pkey PRIMARY KEY (user_id, capacity);
+
+
+--
+-- Name: logs logs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.logs
+    ADD CONSTRAINT logs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: places places_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.places
+    ADD CONSTRAINT places_pkey PRIMARY KEY (user_id, place);
+
+
+--
+-- Name: templates templates_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.templates
+    ADD CONSTRAINT templates_pkey PRIMARY KEY (user_id, template_name);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: aircraft aircraft_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.aircraft
+    ADD CONSTRAINT aircraft_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: capacity capacity_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.capacity
+    ADD CONSTRAINT capacity_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: logs logs_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.logs
+    ADD CONSTRAINT logs_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: logs logs_user_id_fkey1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.logs
+    ADD CONSTRAINT logs_user_id_fkey1 FOREIGN KEY (user_id, aircraft, type) REFERENCES public.aircraft(user_id, aircraft, type);
+
+
+--
+-- Name: logs logs_user_id_fkey2; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.logs
+    ADD CONSTRAINT logs_user_id_fkey2 FOREIGN KEY (user_id, departure_place) REFERENCES public.places(user_id, place);
+
+
+--
+-- Name: logs logs_user_id_fkey3; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.logs
+    ADD CONSTRAINT logs_user_id_fkey3 FOREIGN KEY (user_id, arrival_place) REFERENCES public.places(user_id, place);
+
+
+--
+-- Name: logs logs_user_id_fkey4; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.logs
+    ADD CONSTRAINT logs_user_id_fkey4 FOREIGN KEY (user_id, capacity) REFERENCES public.capacity(user_id, capacity);
+
+
+--
+-- Name: places places_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.places
+    ADD CONSTRAINT places_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: templates templates_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.templates
+    ADD CONSTRAINT templates_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: templates templates_user_id_fkey1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.templates
+    ADD CONSTRAINT templates_user_id_fkey1 FOREIGN KEY (user_id, departure_place) REFERENCES public.places(user_id, place);
+
+
+--
+-- Name: templates templates_user_id_fkey2; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.templates
+    ADD CONSTRAINT templates_user_id_fkey2 FOREIGN KEY (user_id, arrival_place) REFERENCES public.places(user_id, place);
+
+
+--
+-- Name: templates templates_user_id_fkey3; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.templates
+    ADD CONSTRAINT templates_user_id_fkey3 FOREIGN KEY (user_id, capacity) REFERENCES public.capacity(user_id, capacity);
+
+
+--
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
+--
+
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

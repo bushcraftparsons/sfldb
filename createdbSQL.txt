@@ -1,0 +1,71 @@
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO public;
+CREATE TABLE users(
+	id BIGSERIAL PRIMARY KEY,
+	email VARCHAR(40) NOT NULL
+);
+CREATE TABLE capacity (
+	user_id INTEGER REFERENCES users(id),
+	capacity VARCHAR(5),
+	PRIMARY KEY (user_id, capacity)
+);
+CREATE TABLE places (
+	user_id INTEGER REFERENCES users(id),
+	place VARCHAR(3),
+	PRIMARY KEY (user_id, place)
+);
+CREATE TABLE aircraft(
+	user_id INTEGER REFERENCES users(id),
+	aircraft VARCHAR(6),
+	type VARCHAR(4) NOT NULL,
+	PRIMARY KEY (user_id, aircraft, type)
+);
+CREATE TABLE logs(
+	id BIGSERIAL PRIMARY KEY,
+	user_id INTEGER REFERENCES users(id),
+	date DATE NOT NULL,
+	aircraft VARCHAR(6) NOT NULL,
+	type VARCHAR(4) NOT NULL,
+	FOREIGN KEY (user_id, aircraft,type) REFERENCES aircraft(user_id, aircraft,type),
+	departure_place VARCHAR(3),
+	FOREIGN KEY (user_id, departure_place) REFERENCES places(user_id, place),
+	departure_time TIMESTAMP WITHOUT TIME ZONE,
+	arrival_place VARCHAR(3),
+	FOREIGN KEY (user_id, arrival_place) REFERENCES places(user_id, place),
+	arrival_time TIMESTAMP WITHOUT TIME ZONE,
+	flight_time INTEGER NOT NULL,
+	inst_app BOOLEAN DEFAULT TRUE,
+	night_flight INTEGER,
+	log BOOLEAN DEFAULT TRUE,
+	comments TEXT,
+	pilot_no VARCHAR(2) NOT NULL,
+	capacity VARCHAR(5),
+	FOREIGN KEY (user_id, capacity) REFERENCES capacity(user_id, capacity),
+	created_at TIME,
+	deleted_at TIME,
+	updated_at TIME
+);
+CREATE TABLE templates(
+	user_id INTEGER REFERENCES users(id),
+	template_name VARCHAR(10),
+	PRIMARY KEY (user_id, template_name),
+	departure_place VARCHAR(3),
+	FOREIGN KEY (user_id, departure_place) REFERENCES places(user_id, place),
+	departure_time TIMESTAMP WITHOUT TIME ZONE,
+	arrival_place VARCHAR(3),
+	FOREIGN KEY (user_id, arrival_place) REFERENCES places(user_id, place),
+	arrival_time TIMESTAMP WITHOUT TIME ZONE,
+	flight_time INTEGER,
+	inst_app BOOLEAN,
+	night_flight INTEGER,
+	log BOOLEAN DEFAULT TRUE,
+	comments TEXT,
+	pilot_no VARCHAR(2),
+	capacity VARCHAR(5),
+	FOREIGN KEY (user_id, capacity) REFERENCES capacity(user_id, capacity),
+	created_at TIME,
+	deleted_at TIME,
+	updated_at TIME
+);

@@ -1,0 +1,7 @@
+go get github.com/futurenda/google-auth-id-token-verifier
+go get github.com/dgrijalva/jwt-go
+go get github.com/lib/pq
+go get github.com/joho/godotenv
+go get github.com/jinzhu/gorm
+go get github.com/gorilla/mux
+
