@@ -1,0 +1,14 @@
+version: "3"
+services:
+  sfldb:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: -c ssl=on -c ssl_cert_file=/var/lib/postgresql/server.crt -c ssl_key_file=/var/lib/postgresql/server.key
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: SFLog-017
+    volumes:
+      -  ../../sfldb:/sfldb
+    ports:
+      - '6432:5432'
