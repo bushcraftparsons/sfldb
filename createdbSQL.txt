@@ -4,7 +4,8 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO public;
 CREATE TABLE users(
 	id BIGSERIAL PRIMARY KEY,
-	email VARCHAR(40) NOT NULL
+	email VARCHAR(40) NOT NULL,
+	is_admin BOOLEAN DEFAULT FALSE
 );
 CREATE TABLE capacity (
 	user_id INTEGER REFERENCES users(id),

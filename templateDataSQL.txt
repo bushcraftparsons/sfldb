@@ -1,6 +1,6 @@
-INSERT INTO users(email) VALUES
-('bushcraftparsons@gmail.com'),
-('pilotofpenzance@gmail.com');
+INSERT INTO users(email, is_admin) VALUES
+('bushcraftparsons@gmail.com', true),
+('pilotofpenzance@gmail.com', false);
 
 INSERT INTO capacity(capacity, user_id) VALUES
 ('P1', 1),
